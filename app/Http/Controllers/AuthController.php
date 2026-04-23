@@ -16,7 +16,7 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $credentials = $request->validate([
-            'email' => ['required', 'email'],
+            'email'    => ['required', 'email'],
             'password' => ['required'],
         ]);
 
@@ -27,11 +27,9 @@ class AuthController extends Controller
 
         try {
             $response = $client->post('/api/login', [
-                'headers' => [
-                    'Accept' => 'application/json',
-                ],
-                'json' => [
-                    'email' => $credentials['email'],
+                'headers' => ['Accept' => 'application/json'],
+                'json'    => [
+                    'email'    => $credentials['email'],
                     'password' => $credentials['password'],
                 ],
             ]);
@@ -40,13 +38,14 @@ class AuthController extends Controller
 
             session([
                 'access_token' => $data['access_token'],
-                'auth_user' => $data['user'],
+                'auth_user'    => $data['user'],
             ]);
 
+            // Redirección según role_id real del sistema de flotilla
             return match ($data['user']['role_id'] ?? null) {
-                1 => redirect()->route('dashboard.admin'),
-                2 => redirect()->route('dashboard.teacher'),
-                3 => redirect()->route('dashboard.student'),
+                1 => redirect()->route('dashboard.admin'),    // Administrador
+                2 => redirect()->route('dashboard.operator'), // Operador
+                3 => redirect()->route('dashboard.driver'),   // Chofer
                 default => back()->withErrors([
                     'email' => 'El usuario no tiene un rol válido para ingresar al sistema.',
                 ])->onlyInput('email'),
@@ -56,10 +55,9 @@ class AuthController extends Controller
             $response = $e->getResponse();
 
             if ($response) {
-                $data = json_decode($response->getBody()->getContents(), true);
-
+                $body = json_decode($response->getBody()->getContents(), true);
                 return back()->withErrors([
-                    'email' => $data['message'] ?? 'No fue posible iniciar sesión.',
+                    'email' => $body['message'] ?? 'No fue posible iniciar sesión.',
                 ])->onlyInput('email');
             }
 
@@ -82,11 +80,12 @@ class AuthController extends Controller
             try {
                 $client->post('/api/logout', [
                     'headers' => [
-                        'Accept' => 'application/json',
+                        'Accept'        => 'application/json',
                         'Authorization' => 'Bearer ' . $token,
                     ],
                 ]);
             } catch (\Throwable $e) {
+                // Ignorar error
             }
         }
 

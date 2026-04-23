@@ -1,304 +1,174 @@
-      <aside class="app-sidebar bg-body-secondary shadow" data-bs-theme="dark">
-          <!--begin::Sidebar Brand-->
-          <div class="sidebar-brand">
-              <!--begin::Brand Link-->
-              <a href="{{ route('dashboard') }}" class="brand-link">
-                  <!--begin::Brand Image-->
-                  <img src="{{ asset('assets/img/AdminLTELogo.png') }}" alt="AdminLTE Logo"
-                      class="brand-image opacity-75 shadow" />
-                  <!--end::Brand Image-->
-                  <!--begin::Brand Text-->
-                  <span class="brand-text fw-light">Academy Dev</span>
-                  <!--end::Brand Text-->
-              </a>
-              <!--end::Brand Link-->
-          </div>
-          <!--end::Sidebar Brand-->
-          <!--begin::Sidebar Wrapper-->
-          <div class="sidebar-wrapper">
-              <nav class="mt-2">
-                  <!--begin::Sidebar Menu-->
-                  <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="navigation"
-                      aria-label="Main navigation" data-accordion="false" id="navigation">
-                      <li class="nav-item">
-                          <a href="#" class="nav-link">
-                              <i class="nav-icon bi bi-people-fill"></i>
-                              <p>
-                                  Usuarios
-                                  <i class="nav-arrow bi bi-chevron-right"></i>
-                              </p>
-                          </a>
-                          <ul class="nav nav-treeview">
-                              <li class="nav-item">
-                                  <a href="{{ route('users.register') }}" class="nav-link">
-                                      <i class="nav-icon bi bi-circle"></i>
-                                      <p>Registrar</p>
-                                  </a>
-                              </li>
-                              <li class="nav-item">
-                                  <a href="" class="nav-link">
-                                      <i class="nav-icon bi bi-circle"></i>
-                                      <p>Todos</p>
-                                  </a>
-                              </li>
-                          </ul>
-                      </li>
+<aside class="app-sidebar bg-body-secondary shadow" data-bs-theme="dark">
+    <!--begin::Sidebar Brand-->
+    <div class="sidebar-brand">
+        <!--begin::Brand Link-->
+        <a href="{{ route('dashboard') }}" class="brand-link">
+            <!--begin::Brand Image-->
+            <img src="{{ asset('assets/img/AdminLTELogo.png') }}" alt="AdminLTE Logo"
+                class="brand-image opacity-75 shadow" />
+            <!--end::Brand Image-->
+            <!--begin::Brand Text-->
+            <span class="brand-text fw-light">Flotilla</span>
+            <!--end::Brand Text-->
+        </a>
+        <!--end::Brand Link-->
+    </div>
+    <!--end::Sidebar Brand-->
 
-                      <li class="nav-item">
-                          <a href="#" class="nav-link">
-                              <i class="nav-icon bi bi-journal-bookmark-fill"></i>
-                              <p>
-                                  Cursos
-                                  <i class="nav-arrow bi bi-chevron-right"></i>
-                              </p>
-                          </a>
-                          <ul class="nav nav-treeview">
-                              <li class="nav-item">
-                                  <a href="{{ route('courses.create') }}" class="nav-link">
-                                      <i class="nav-icon bi bi-circle"></i>
-                                      <p>Registrar</p>
-                                  </a>
-                              </li>
-                              <li class="nav-item">
-                                  <a href="{{ route('courses.index') }}" class="nav-link">
-                                      <i class="nav-icon bi bi-circle"></i>
-                                      <p>Todos</p>
-                                  </a>
-                              </li>
-                          </ul>
-                      </li>
+    <!--begin::Sidebar Wrapper-->
+    <div class="sidebar-wrapper">
+        <nav class="mt-2">
 
-                      <li class="nav-item">
-                          <a href="#" class="nav-link">
-                              <i class="nav-icon bi bi-box-seam-fill"></i>
-                              <p>
-                                  Widgets
-                                  <i class="nav-arrow bi bi-chevron-right"></i>
-                              </p>
-                          </a>
-                          <ul class="nav nav-treeview">
-                              <li class="nav-item">
-                                  <a href="./widgets/small-box.html" class="nav-link">
-                                      <i class="nav-icon bi bi-circle"></i>
-                                      <p>Small Box</p>
-                                  </a>
-                              </li>
-                              <li class="nav-item">
-                                  <a href="./widgets/info-box.html" class="nav-link">
-                                      <i class="nav-icon bi bi-circle"></i>
-                                      <p>info Box</p>
-                                  </a>
-                              </li>
-                              <li class="nav-item">
-                                  <a href="./widgets/cards.html" class="nav-link">
-                                      <i class="nav-icon bi bi-circle"></i>
-                                      <p>Cards</p>
-                                  </a>
-                              </li>
-                          </ul>
-                      </li>
-                      <li class="nav-item">
-                          <a href="#" class="nav-link">
-                              <i class="nav-icon bi bi-clipboard-fill"></i>
-                              <p>
-                                  Layout Options
-                                  <span class="nav-badge badge text-bg-secondary me-3">6</span>
-                                  <i class="nav-arrow bi bi-chevron-right"></i>
-                              </p>
-                          </a>
-                          <ul class="nav nav-treeview">
-                              <li class="nav-item">
-                                  <a href="./layout/unfixed-sidebar.html" class="nav-link">
-                                      <i class="nav-icon bi bi-circle"></i>
-                                      <p>Default Sidebar</p>
-                                  </a>
-                              </li>
-                              <li class="nav-item">
-                                  <a href="./layout/fixed-sidebar.html" class="nav-link">
-                                      <i class="nav-icon bi bi-circle"></i>
-                                      <p>Fixed Sidebar</p>
-                                  </a>
-                              </li>
-                              <li class="nav-item">
-                                  <a href="./layout/fixed-header.html" class="nav-link">
-                                      <i class="nav-icon bi bi-circle"></i>
-                                      <p>Fixed Header</p>
-                                  </a>
-                              </li>
-                              <li class="nav-item">
-                                  <a href="./layout/fixed-footer.html" class="nav-link">
-                                      <i class="nav-icon bi bi-circle"></i>
-                                      <p>Fixed Footer</p>
-                                  </a>
-                              </li>
-                              <li class="nav-item">
-                                  <a href="./layout/fixed-complete.html" class="nav-link">
-                                      <i class="nav-icon bi bi-circle"></i>
-                                      <p>Fixed Complete</p>
-                                  </a>
-                              </li>
-                              <li class="nav-item">
-                                  <a href="./layout/layout-custom-area.html" class="nav-link">
-                                      <i class="nav-icon bi bi-circle"></i>
-                                      <p>Layout <small>+ Custom Area </small></p>
-                                  </a>
-                              </li>
-                              <li class="nav-item">
-                                  <a href="./layout/sidebar-mini.html" class="nav-link">
-                                      <i class="nav-icon bi bi-circle"></i>
-                                      <p>Sidebar Mini</p>
-                                  </a>
-                              </li>
-                              <li class="nav-item">
-                                  <a href="./layout/collapsed-sidebar.html" class="nav-link">
-                                      <i class="nav-icon bi bi-circle"></i>
-                                      <p>Sidebar Mini <small>+ Collapsed</small></p>
-                                  </a>
-                              </li>
-                              <li class="nav-item">
-                                  <a href="./layout/logo-switch.html" class="nav-link">
-                                      <i class="nav-icon bi bi-circle"></i>
-                                      <p>Sidebar Mini <small>+ Logo Switch</small></p>
-                                  </a>
-                              </li>
-                              <li class="nav-item">
-                                  <a href="./layout/layout-rtl.html" class="nav-link">
-                                      <i class="nav-icon bi bi-circle"></i>
-                                      <p>Layout RTL</p>
-                                  </a>
-                              </li>
-                          </ul>
-                      </li>
-                      <li class="nav-item">
-                          <a href="#" class="nav-link">
-                              <i class="nav-icon bi bi-tree-fill"></i>
-                              <p>
-                                  UI Elements
-                                  <i class="nav-arrow bi bi-chevron-right"></i>
-                              </p>
-                          </a>
-                          <ul class="nav nav-treeview">
-                              <li class="nav-item">
-                                  <a href="./UI/general.html" class="nav-link">
-                                      <i class="nav-icon bi bi-circle"></i>
-                                      <p>General</p>
-                                  </a>
-                              </li>
-                              <li class="nav-item">
-                                  <a href="./UI/icons.html" class="nav-link">
-                                      <i class="nav-icon bi bi-circle"></i>
-                                      <p>Icons</p>
-                                  </a>
-                              </li>
-                              <li class="nav-item">
-                                  <a href="./UI/timeline.html" class="nav-link">
-                                      <i class="nav-icon bi bi-circle"></i>
-                                      <p>Timeline</p>
-                                  </a>
-                              </li>
-                          </ul>
-                      </li>
-                      <li class="nav-item">
-                          <a href="#" class="nav-link">
-                              <i class="nav-icon bi bi-pencil-square"></i>
-                              <p>
-                                  Forms
-                                  <i class="nav-arrow bi bi-chevron-right"></i>
-                              </p>
-                          </a>
-                          <ul class="nav nav-treeview">
-                              <li class="nav-item">
-                                  <a href="./forms/general.html" class="nav-link">
-                                      <i class="nav-icon bi bi-circle"></i>
-                                      <p>General Elements</p>
-                                  </a>
-                              </li>
-                          </ul>
-                      </li>
-                      <li class="nav-item">
-                          <a href="#" class="nav-link">
-                              <i class="nav-icon bi bi-table"></i>
-                              <p>
-                                  Tables
-                                  <i class="nav-arrow bi bi-chevron-right"></i>
-                              </p>
-                          </a>
-                          <ul class="nav nav-treeview">
-                              <li class="nav-item">
-                                  <a href="./tables/simple.html" class="nav-link">
-                                      <i class="nav-icon bi bi-circle"></i>
-                                      <p>Simple Tables</p>
-                                  </a>
-                              </li>
-                          </ul>
-                      </li>
+            <!--begin::Sidebar Menu-->
+            <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="navigation"
+                aria-label="Main navigation" data-accordion="false" id="navigation">
 
-                      <li class="nav-header">EXAMPLES</li>
-                      <li class="nav-item">
-                          <a href="#" class="nav-link">
-                              <i class="nav-icon bi bi-box-arrow-in-right"></i>
-                              <p>
-                                  Auth
-                                  <i class="nav-arrow bi bi-chevron-right"></i>
-                              </p>
-                          </a>
-                          <ul class="nav nav-treeview">
-                              <li class="nav-item">
-                                  <a href="#" class="nav-link">
-                                      <i class="nav-icon bi bi-box-arrow-in-right"></i>
-                                      <p>
-                                          Version 1
-                                          <i class="nav-arrow bi bi-chevron-right"></i>
-                                      </p>
-                                  </a>
-                                  <ul class="nav nav-treeview">
-                                      <li class="nav-item">
-                                          <a href="./examples/login.html" class="nav-link">
-                                              <i class="nav-icon bi bi-circle"></i>
-                                              <p>Login</p>
-                                          </a>
-                                      </li>
-                                      <li class="nav-item">
-                                          <a href="./examples/register.html" class="nav-link">
-                                              <i class="nav-icon bi bi-circle"></i>
-                                              <p>Register</p>
-                                          </a>
-                                      </li>
-                                  </ul>
-                              </li>
-                              <li class="nav-item">
-                                  <a href="#" class="nav-link">
-                                      <i class="nav-icon bi bi-box-arrow-in-right"></i>
-                                      <p>
-                                          Version 2
-                                          <i class="nav-arrow bi bi-chevron-right"></i>
-                                      </p>
-                                  </a>
-                                  <ul class="nav nav-treeview">
-                                      <li class="nav-item">
-                                          <a href="./examples/login-v2.html" class="nav-link">
-                                              <i class="nav-icon bi bi-circle"></i>
-                                              <p>Login</p>
-                                          </a>
-                                      </li>
-                                      <li class="nav-item">
-                                          <a href="./examples/register-v2.html" class="nav-link">
-                                              <i class="nav-icon bi bi-circle"></i>
-                                              <p>Register</p>
-                                          </a>
-                                      </li>
-                                  </ul>
-                              </li>
-                              <li class="nav-item">
-                                  <a href="./examples/lockscreen.html" class="nav-link">
-                                      <i class="nav-icon bi bi-circle"></i>
-                                      <p>Lockscreen</p>
-                                  </a>
-                              </li>
-                          </ul>
-                  </ul>
-                  <!--end::Sidebar Menu-->
-              </nav>
-          </div>
-          <!--end::Sidebar Wrapper-->
-      </aside>
+                <!-- Módulo Usuarios -->
+                @if(session('auth_user') && session('auth_user')['role_id'] == 1)
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon bi bi-people-fill"></i>
+                        <p>
+                            Usuarios
+                            <i class="nav-arrow bi bi-chevron-right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('users.register') }}" class="nav-link">
+                                <i class="nav-icon bi bi-circle"></i>
+                                <p>Registrar</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('users.index') }}" class="nav-link">
+                                <i class="nav-icon bi bi-circle"></i>
+                                <p>Todos</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                @endif
+
+                <!-- Módulo Vehículos (comentado) -->
+                {{--
+                @if(session('auth_user') && in_array(session('auth_user')['role_id'], [1, 2]))
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon bi bi-truck"></i>
+                        <p>
+                            Vehículos
+                            <i class="nav-arrow bi bi-chevron-right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('vehicles.index') }}" class="nav-link">
+                                <i class="nav-icon bi bi-circle"></i>
+                                <p>Todos</p>
+                            </a>
+                        </li>
+                        @if(session('auth_user')['role_id'] == 1)
+                        <li class="nav-item">
+                            <a href="{{ route('vehicles.create') }}" class="nav-link">
+                                <i class="nav-icon bi bi-circle"></i>
+                                <p>Registrar</p>
+                            </a>
+                        </li>
+                        @endif
+                    </ul>
+                </li>
+                @endif
+                --}}
+
+                <!-- Módulo Rutas (comentado) -->
+                {{--
+                @if(session('auth_user') && in_array(session('auth_user')['role_id'], [1, 2]))
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon bi bi-map"></i>
+                        <p>
+                            Rutas
+                            <i class="nav-arrow bi bi-chevron-right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('routes.index') }}" class="nav-link">
+                                <i class="nav-icon bi bi-circle"></i>
+                                <p>Todas</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('routes.create') }}" class="nav-link">
+                                <i class="nav-icon bi bi-circle"></i>
+                                <p>Registrar</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                @endif
+                --}}
+
+                <!-- Módulo Solicitudes (comentado) -->
+                {{--
+                @if(session('auth_user'))
+                    @php $role = session('auth_user')['role_id']; @endphp
+                    @if($role == 3)
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon bi bi-calendar-check"></i>
+                            <p>
+                                Solicitudes
+                                <i class="nav-arrow bi bi-chevron-right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{ route('requests.create') }}" class="nav-link">
+                                    <i class="nav-icon bi bi-circle"></i>
+                                    <p>Nueva solicitud</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('requests.my') }}" class="nav-link">
+                                    <i class="nav-icon bi bi-circle"></i>
+                                    <p>Mis solicitudes</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    @elseif($role == 2)
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon bi bi-inbox"></i>
+                            <p>
+                                Solicitudes
+                                <i class="nav-arrow bi bi-chevron-right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{ route('requests.pending') }}" class="nav-link">
+                                    <i class="nav-icon bi bi-circle"></i>
+                                    <p>Pendientes</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('requests.assign') }}" class="nav-link">
+                                    <i class="nav-icon bi bi-circle"></i>
+                                    <p>Asignación directa</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    @endif
+                @endif
+                --}}
+
+            </ul>
+            <!--end::Sidebar Menu-->
+        </nav>
+    </div>
+    <!--end::Sidebar Wrapper-->
+</aside>

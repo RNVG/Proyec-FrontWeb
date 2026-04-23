@@ -4,7 +4,7 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Academy | Registrar Usuario</title>
+    <title>Academy | Editar Usuario</title>
 
     <!--begin::Accessibility Meta Tags-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
@@ -14,10 +14,10 @@
     <!--end::Accessibility Meta Tags-->
 
     <!--begin::Primary Meta Tags-->
-    <meta name="title" content="Academy | Registrar Usuario" />
+    <meta name="title" content="Academy | Editar Usuario" />
     <meta name="author" content="ColorlibHQ" />
-    <meta name="description" content="Formulario para registrar usuarios en el sistema Academy." />
-    <meta name="keywords" content="academy, usuarios, registrar usuario, adminlte, laravel, blade" />
+    <meta name="description" content="Formulario para editar usuarios en el sistema Academy." />
+    <meta name="keywords" content="academy, usuarios, editar usuario, adminlte, laravel, blade" />
     <!--end::Primary Meta Tags-->
 
     <!--begin::Accessibility Features-->
@@ -67,12 +67,13 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-sm-6">
-                            <h3 class="mb-0">Registrar</h3>
+                            <h3 class="mb-0">Editar</h3>
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-end">
                                 <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Crear Usuario</li>
+                                <li class="breadcrumb-item"><a href="{{ route('users.index') }}">Usuarios</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Editar Usuario</li>
                             </ol>
                         </div>
                     </div>
@@ -90,6 +91,18 @@
                                     <div class="card-title">Usuario</div>
                                 </div>
 
+                                @if (session('success'))
+                                    <div class="alert alert-success rounded-0 mb-0">
+                                        {{ session('success') }}
+                                    </div>
+                                @endif
+
+                                @if (session('error'))
+                                    <div class="alert alert-danger rounded-0 mb-0">
+                                        {{ session('error') }}
+                                    </div>
+                                @endif
+
                                 @if ($errors->any())
                                     <div class="alert alert-danger rounded-0 mb-0">
                                         <strong>Se encontraron errores en el formulario:</strong>
@@ -101,8 +114,10 @@
                                     </div>
                                 @endif
 
-                                <form action="{{ route('users.store') }}" method="POST" class="needs-validation" novalidate>
+                                <form action="{{ route('users.update', $user['id']) }}" method="POST" class="needs-validation"
+                                    novalidate>
                                     @csrf
+                                    @method('PUT')
 
                                     <div class="card-body">
                                         <div class="row g-3">
@@ -110,7 +125,7 @@
                                                 <label for="name" class="form-label">Nombre completo</label>
                                                 <input type="text" name="name" id="name"
                                                     class="form-control @error('name') is-invalid @enderror"
-                                                    value="{{ old('name') }}" required />
+                                                    value="{{ old('name', $user['name']) }}" required />
                                                 <div class="invalid-feedback">Ingrese el nombre completo del usuario.</div>
                                                 @error('name')
                                                     <div class="text-danger small mt-1">{{ $message }}</div>
@@ -123,7 +138,7 @@
                                                     <span class="input-group-text" id="inputGroupPrepend">@</span>
                                                     <input type="email" name="email" id="email"
                                                         class="form-control @error('email') is-invalid @enderror"
-                                                        value="{{ old('email') }}" 
+                                                        value="{{ old('email', $user['email']) }}"
                                                         aria-describedby="inputGroupPrepend" required />
                                                     <div class="invalid-feedback">Ingrese un correo electrónico válido.</div>
                                                 </div>
@@ -136,7 +151,7 @@
                                                 <label for="telephone" class="form-label">Teléfono</label>
                                                 <input type="text" name="telephone" id="telephone"
                                                     class="form-control @error('telephone') is-invalid @enderror"
-                                                    value="{{ old('telephone') }}" required />
+                                                    value="{{ old('telephone', $user['telephone']) }}" required />
                                                 <div class="invalid-feedback">Ingrese el número telefónico.</div>
                                                 @error('telephone')
                                                     <div class="text-danger small mt-1">{{ $message }}</div>
@@ -151,7 +166,7 @@
                                                     <option value="">Seleccione un rol</option>
                                                     @foreach ($roles as $role)
                                                         <option value="{{ $role['id'] }}"
-                                                            {{ old('role_id') == $role['id'] ? 'selected' : '' }}>
+                                                            {{ old('role_id', $user['role_id']) == $role['id'] ? 'selected' : '' }}>
                                                             {{ $role['rol_name'] }}
                                                         </option>
                                                     @endforeach
@@ -163,22 +178,23 @@
                                             </div>
 
                                             <div class="col-md-6">
-                                                <label for="password" class="form-label">Contraseña</label>
+                                                <label for="password" class="form-label">Nueva contraseña</label>
                                                 <input type="password" name="password" id="password"
-                                                    class="form-control @error('password') is-invalid @enderror"
-                                                    required />
-                                                <div class="invalid-feedback">Cree una contraseña (mínimo 8 caracteres).</div>
+                                                    class="form-control @error('password') is-invalid @enderror" />
+                                                <div class="form-text text-muted small">
+                                                    Dejar en blanco si no desea cambiar la contraseña.
+                                                </div>
+                                                <div class="invalid-feedback">La contraseña debe tener al menos 8 caracteres.</div>
                                                 @error('password')
                                                     <div class="text-danger small mt-1">{{ $message }}</div>
                                                 @enderror
                                             </div>
 
                                             <div class="col-md-6">
-                                                <label for="password_confirmation" class="form-label">Confirmar contraseña</label>
+                                                <label for="password_confirmation" class="form-label">Confirmar nueva contraseña</label>
                                                 <input type="password" name="password_confirmation" id="password_confirmation"
-                                                    class="form-control @error('password_confirmation') is-invalid @enderror"
-                                                    required />
-                                                <div class="invalid-feedback">Confirme la contraseña.</div>
+                                                    class="form-control @error('password_confirmation') is-invalid @enderror" />
+                                                <div class="invalid-feedback">Confirme la nueva contraseña.</div>
                                                 @error('password_confirmation')
                                                     <div class="text-danger small mt-1">{{ $message }}</div>
                                                 @enderror
@@ -186,9 +202,15 @@
                                         </div>
                                     </div>
 
-                                    <div class="card-footer d-flex justify-content-end">
+                                    <div class="card-footer d-flex justify-content-between">
+                                        <a href="{{ route('users.index') }}" class="btn btn-secondary">
+                                            <i class="bi bi-arrow-left me-1"></i>
+                                            Volver
+                                        </a>
+
                                         <button class="btn btn-info" type="submit">
-                                            Registrar usuario
+                                            <i class="bi bi-check-circle me-1"></i>
+                                            Actualizar usuario
                                         </button>
                                     </div>
                                 </form>
