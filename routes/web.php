@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\VehicleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -81,3 +82,40 @@ Route::prefix('users')->name('users.')->group(function () {
     Route::delete('/{user}', [UserController::class, 'destroy'])->name('destroy');  // Soft delete
     Route::patch('/{user}/restore', [UserController::class, 'restore'])->name('restore'); // Reactivar
 });
+
+Route::prefix('vehicle')->name('vehicle.')->group(function () {
+    Route::get('/', [VehicleController::class, 'index'])->name('index');
+    Route::get('/create', [VehicleController::class, 'create'])->name('create');
+    Route::get('/{id}/edit', [VehicleController::class, 'edit'])->name('edit');
+    Route::get('/{id}', [VehicleController::class, 'show'])->name('show');
+    Route::post('/', [VehicleController::class, 'store'])->name('store');
+
+    Route::put('/{id}', [VehicleController::class, 'update'])->name('update');
+    Route::delete('/{id}', [VehicleController::class, 'destroy'])->name('destroy');
+    Route::patch('/{id}/restore', [VehicleController::class, 'restore'])->name('restore');
+});
+
+
+/*
+Route::get('/users/register', function () {
+    return view('layouts.users.register');
+})->name('users.register');
+
+// Listar usuarios (activos/inactivos)
+Route::get('/users', [UserController::class, 'index'])->name('users.index');
+
+// Crear usuario
+Route::post('/users', [UserController::class, 'store'])->name('use rs.store');
+
+// Editar (formulario)
+Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('users.edit');
+
+// Actualizar
+Route::put('/users/{id}', [UserController::class, 'update'])->name('users.update');
+
+// Inactivar
+Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
+
+// Reactivar
+Route::patch('/users/{id}/restore', [UserController::class, 'restore'])->name('users.restore');
+*/
