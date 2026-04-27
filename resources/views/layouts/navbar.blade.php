@@ -158,8 +158,8 @@
                                  alt="User Image" />
                              <p>
                                 
-                                @if(auth()->check())
-                                    <span>{{ auth()->user()->name }}</span>
+                                @if(session('name'))
+                                    <span>{{ session('name') }}</span>
                                 @else
                                     Usuario Anónimo
                                 @endif

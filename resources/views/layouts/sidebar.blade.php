@@ -72,8 +72,161 @@
                 </li>
                 @endif
                 
+                @if(session('auth_user') && session('auth_user')['role_id'] == 1)
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon bi bi-people-fill"></i>
+                        <p>
+                            Rutas
+                            <i class="nav-arrow bi bi-chevron-right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('routes.create') }}" class="nav-link">
+                                <i class="nav-icon bi bi-circle"></i>
+                                <p>Registrar nueva ruta</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('routes.index') }}" class="nav-link">
+                                <i class="nav-icon bi bi-circle"></i>
+                                <p>Ver todas la rutas</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('routes.index') }}" class="nav-link">
+                                <i class="nav-icon bi bi-circle"></i>
+                                <p>Todos</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                @endif
+
+                @if(session('auth_user') && session('auth_user')['role_id'] == 1)
+                    <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon bi bi-people-fill"></i>
+                        <p>
+                            Vehiculos
+                            <i class="nav-arrow bi bi-chevron-right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('vehicle.index') }}" class="nav-link">
+                                <i class="nav-icon bi bi-circle"></i>
+                                <p>Todos</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                @endif
+
+                @if(session('auth_user') && session('auth_user')['role_id'] == 2 || session('auth_user')['role_id'] == 1)
+                    <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon bi bi-people-fill"></i>
+                        <p>
+                            Solicitudes
+                            <i class="nav-arrow bi bi-chevron-right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('requests.admin_index') }}" class="nav-link">
+                                <i class="nav-icon bi bi-circle"></i>
+                                <p>Todos</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                @endif
+                
+
+                @if(session('auth_user') && session('auth_user')['role_id'] == 3)
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon bi bi-people-fill"></i>
+                            <p>
+                                Vehiculos
+                                <i class="nav-arrow bi bi-chevron-right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{ route('requests.index') }}" class="nav-link">
+                                    <i class="nav-icon bi bi-circle"></i>
+                                    <p>Ver vehiculos habilitados</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon bi bi-people-fill"></i>
+                            <p>
+                                Historial de solicitudes
+                                <i class="nav-arrow bi bi-chevron-right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{ route('requests.my_requests') }}" class="nav-link">
+                                    <i class="nav-icon bi bi-circle"></i>
+                                    <p>Ver historial de solicitudes</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                @endif
+                
+                
+
+
+
+
+
+
+                <!-- Módulo Vehículos (comentado) -->
+                {{--
+                @if(session('auth_user') && in_array(session('auth_user')['role_id'], [1, 2]))
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon bi bi-truck"></i>
+                        <p>
+                            Vehículos
+                            <i class="nav-arrow bi bi-chevron-right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('vehicles.index') }}" class="nav-link">
+                                <i class="nav-icon bi bi-circle"></i>
+                                <p>Todos</p>
+                            </a>
+                        </li>
+                        @if(session('auth_user')['role_id'] == 1)
+                        <li class="nav-item">
+                            <a href="{{ route('vehicles.create') }}" class="nav-link">
+                                <i class="nav-icon bi bi-circle"></i>
+                                <p>Registrar</p>
+                            </a>
+                        </li>
+                        @endif
+                    </ul>
+                </li>
+                @endif
+                --}}
+
+                <!-- Módulo Rutas (comentado) -->
+                {{--
+                @if(session('auth_user') && in_array(session('auth_user')['role_id'], [1, 2]))
                 <!-- Módulo Rutas (Solo Operador) -->
                 @if(session('auth_user') && session('auth_user')['role_id'] == 2)
+
                 <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="nav-icon bi bi-map"></i>

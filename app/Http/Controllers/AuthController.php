@@ -42,7 +42,6 @@ class AuthController extends Controller
                 'role_id'      => $data['user']['role_id'],
                 'name'         => $data['user']['name'],
             ]);
-
             // Redirección según role_id real del sistema de flotilla
             return match ($data['user']['role_id'] ?? null) {
                 1 => redirect()->route('dashboard.admin'),    // Administrador
