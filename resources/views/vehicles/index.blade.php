@@ -28,8 +28,7 @@
                         </div>
                         {{-- Botón Registrar: Solo para Administradores (Rol 1) --}}
                         <div class="col-sm-6 text-end">
-                            @if(session('role_id') == 1)
-                            
+                            @if(session('auth_user') && session('auth_user')['role_id'] == 1)
                                 <a href="{{ route('vehicle.create') }}" class="btn btn-info btn-sm">
                                     <i class="bi bi-plus-circle me-1"></i> Registrar vehículo
                                 </a>

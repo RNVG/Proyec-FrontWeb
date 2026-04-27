@@ -50,7 +50,28 @@
                 </li>
                 @endif
 
-<<<<<<< HEAD
+                <!-- Módulo Reportes (Solo Admin) -->
+                @if(session('auth_user') && session('auth_user')['role_id'] == 1)
+                <li class="nav-item">
+                    <a href="{{ route('reports.index') }}" class="nav-link">
+                        <i class="nav-icon bi bi-bar-chart-fill"></i>
+                        <p>
+                            Reportes
+                        </p>
+                    </a>
+                </li>
+                @endif
+
+                <!-- Módulo Mantenimientos (Admin/Operador) -->
+                @if(session('auth_user') && in_array(session('auth_user')['role_id'], [1, 2]))
+                <li class="nav-item">
+                    <a href="{{ route('maintenances.index') }}" class="nav-link">
+                        <i class="nav-icon bi bi-cone-striped"></i>
+                        <p>Mantenimientos</p>
+                    </a>
+                </li>
+                @endif
+                
                 @if(session('auth_user') && session('auth_user')['role_id'] == 1)
                 <li class="nav-item">
                     <a href="#" class="nav-link">
@@ -203,10 +224,9 @@
                 <!-- Módulo Rutas (comentado) -->
                 {{--
                 @if(session('auth_user') && in_array(session('auth_user')['role_id'], [1, 2]))
-=======
                 <!-- Módulo Rutas (Solo Operador) -->
                 @if(session('auth_user') && session('auth_user')['role_id'] == 2)
->>>>>>> 591aeb48c6d94c41cd40c189bd042b2b3f9a6e0a
+
                 <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="nav-icon bi bi-map"></i>
