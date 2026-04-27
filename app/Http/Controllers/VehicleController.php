@@ -14,7 +14,6 @@ use Exception;
 class VehicleController extends Controller
 {
 
-
     private function getClient()
     {
         return new Client([
@@ -44,8 +43,7 @@ class VehicleController extends Controller
         $token = session('access_token');
         $role = session('user_role');
 
-        // 1. Protección de Filtros por Rol
-        // Si es Chofer (3), forzamos 'available'. Si no, usamos el filtro del request o 'all'
+
         $status = ($role == 3) ? 'available' : $request->get('status_filter', 'all');
 
         try {
@@ -58,8 +56,7 @@ class VehicleController extends Controller
             if ($response->successful()) {
                 $data = $response->json();
 
-                // 2. Extracción correcta de datos según el JSON de tus compañeros
-                // Según el JSON: message, data { current_page, data: [...] }
+                
                 $vehicles = $data['data']['data'] ?? [];
 
                 // 3. Paginación manual (opcional)
@@ -101,7 +98,6 @@ class VehicleController extends Controller
 
     public function store(Request $request)
     {
-        // 1. Validamos los datos básicos
         $request->validate([
             'plate' => 'required',
             'image' => 'required|image|mimes:jpeg,png,jpg|max:2048', // Máximo 2MB
@@ -110,26 +106,19 @@ class VehicleController extends Controller
         $imageUrl = null;
 
 
-        // 2. Lógica de la Imagen: Guardar localmente en el Front
         if ($request->hasFile('image')) {
             $file = $request->file('image');
 
-            // Creamos un nombre único: ej. 1714123456_placa.jpg
             $fileName = time() . '_' . str_replace(' ', '_', $file->getClientOriginalName());
 
-            // Movemos el archivo a la carpeta pública
-            // Importante: Asegúrate de que exista la carpeta public/uploads/vehicles/
             $file->move(public_path('uploads/vehicles'), $fileName);
 
-            // Generamos la URL completa que guardaremos como string
             $imageUrl = asset('uploads/vehicles/' . $fileName);
         }
 
         try {
-            // 3. Obtener el token de la sesión
             $token = session('access_token');
 
-            // 4. Enviar los datos a la API (incluyendo la URL de la imagen como texto)
             $response = Http::withToken($token)->post(config('services.academy_api.url') . '/api/vehicle', [
                 'plate'      => $request->plate,
                 'brand'      => $request->brand,
@@ -139,7 +128,7 @@ class VehicleController extends Controller
                 'capacity'   => $request->capacity,
                 'fuel_type'  => $request->fuel_type,
                 'status'     => $request->status,
-                'image'      => $imageUrl, // Mandamos el STRING de la URL
+                'image'      => $imageUrl, 
             ]);
 
             if ($response->successful()) {
@@ -155,45 +144,34 @@ class VehicleController extends Controller
 
     public function edit($id)
     {
-        // Obtener el vehículo desde el backend
         $token = session('access_token');
         if (!$token) {
             return redirect()->route('login')->with('error', 'La sesión ha expirado. Inicia sesión nuevamente.');
-        }
-
-        try {
-            // Pedimos a la API los datos del vehículo específico
+        }        try {
             $response = Http::withToken($token)
                 ->get(config('services.academy_api.url') . "/api/vehicle/{$id}");
-
             if ($response->successful()) {
                 $vehicle = $response->json()['data'];
                 return view('vehicles.edit', compact('vehicle'));
-            }
-
+s            }
             return redirect()->route('vehicle.index')->with('error', 'Vehículo no encontrado.');
         } catch (\Exception $e) {
             return redirect()->route('vehicle.index')->with('error', 'Error de conexión.');
         }
     }
-
     public function update(Request $request, $id)
     {
         $imageUrl = $request->old_image;
 
-        // Si el usuario subió una NUEVA imagen
         if ($request->hasFile('image')) {
             $file = $request->file('image');
             $fileName = time() . '_' . str_replace(' ', '_', $file->getClientOriginalName());
             $file->move(public_path('uploads/vehicles'), $fileName);
 
-            // Actualizamos el string de la URL
             $imageUrl = asset('uploads/vehicles/' . $fileName);
         }
-
         try {
             $token = session('access_token');
-            // Enviamos el PUT a la API con todos los campos (incluyendo la URL de la imagen)
             $response = Http::withToken($token)
                 ->put(config('services.academy_api.url') . "/api/vehicle/{$id}", [
                     'plate'      => $request->plate,
@@ -204,7 +182,7 @@ class VehicleController extends Controller
                     'capacity'   => $request->capacity,
                     'fuel_type'  => $request->fuel_type,
                     'status'     => $request->status,
-                    'image'      => $imageUrl, // Mandamos la nueva URL o la anterior
+                    'image'      => $imageUrl, 
                 ]);
             if ($response->successful()) {
                 return redirect()->route('vehicle.index')->with('success', 'Vehículo actualizado correctamente.');
@@ -232,6 +210,7 @@ class VehicleController extends Controller
             return back()->with('error', 'Error de comunicación con el servidor.');
         }
     }
+
     public function restore($id)
     {
         if ($redirect = $this->checkSession()) return $redirect;

@@ -8,9 +8,7 @@ use App\Http\Requests\StoreUserRequest;
 
 class UserController extends Controller
 {
-    /**
-     * Listado de usuarios con filtro activos/inactivos.
-     */
+
     public function index()
     {
         $token = session('access_token');
@@ -18,7 +16,6 @@ class UserController extends Controller
             return redirect()->route('login')->with('error', 'Sesión expirada.');
         }
 
-        // Solo administrador puede acceder
         $authUser = session('auth_user');
         if (!$authUser || ($authUser['role_id'] ?? null) != 1) {
             return redirect()->route('dashboard')->with('error', 'No autorizado.');
@@ -65,9 +62,7 @@ class UserController extends Controller
         }
     }
 
-    /**
-     * Formulario de creación.
-     */
+
     public function create()
     {
         $token = session('access_token');
@@ -120,9 +115,6 @@ class UserController extends Controller
         }
     }
 
-    /**
-     * Formulario de edición.
-     */
     public function edit($id)
     {
         $token = session('access_token');
@@ -184,9 +176,6 @@ class UserController extends Controller
         }
     }
 
-    /**
-     * Soft delete (inactivar).
-     */
     public function destroy($id)
     {
         $token = session('access_token');
@@ -207,9 +196,6 @@ class UserController extends Controller
         }
     }
 
-    /**
-     * Reactivar usuario.
-     */
     public function restore($id)
     {
         $token = session('access_token');

@@ -24,11 +24,6 @@ Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.store');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-/*
-|--------------------------------------------------------------------------
-| Rutas Protegidas (requieren sesión activa)
-|--------------------------------------------------------------------------
-*/
 
 // Dashboard general: redirige según el rol del usuario autenticado
 Route::get('/dashboard', function () {
@@ -98,6 +93,8 @@ Route::prefix('vehicle')->name('vehicle.')->group(function () {
 });
 
 Route::put('/admin/requests/{id}/update', [RequestController::class, 'updateStatus'])->name('admin.requests.update');
+Route::post('admin7/requests/store', [RequestController::class, 'store'])->name('admin.requests.store');
+
 Route::get('/catalog', [RequestController::class, 'catalog'])->name('requests.catalog');
 Route::prefix('requests')->name('requests.')->group(function () {
     Route::get('/my_requests', [RequestController::class, 'myRequests'])->name('my_requests');
@@ -124,9 +121,7 @@ Route::prefix('routes')->name('routes.')->group(function () {
     Route::put('/{id}', [RouteController::class, 'update'])->name('update');
     Route::delete('/{id}', [RouteController::class, 'destroy'])->name('destroy');
 });
-
 // Rutas para gestionar los viajes realizados
-
 Route::prefix('trips')->name('trips.')->group(function () {
     Route::get('/', [TripController::class, 'index'])->name('index');
     Route::get('/create', [TripController::class, 'create'])->name('create');

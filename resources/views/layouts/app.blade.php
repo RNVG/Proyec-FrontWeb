@@ -12,18 +12,15 @@
     
     <link rel="stylesheet" href="{{ asset('css/adminlte.css') }}" />
     
-    @stack('css') {{-- Para meter CSS extra si alguna vista lo ocupa --}}
+    @stack('css') 
 </head>
 
 <body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
     <div class="app-wrapper">
-        
-        {{-- Incluimos los componentes comunes --}}
         @include('layouts.navbar')
         @include('layouts.sidebar')
 
         <main class="app-main">
-            {{-- Aquí es donde aparecerá el contenido de tus vistas --}}
             @yield('content')
         </main>
 
@@ -35,6 +32,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
     <script src="{{ asset('js/adminlte.js') }}"></script>
 
-    @stack('scripts') {{-- Para meter scripts extra --}}
+    @stack('scripts') 
 </body>
 </html>

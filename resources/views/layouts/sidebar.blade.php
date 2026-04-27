@@ -101,7 +101,6 @@
                     </ul>
                 </li>
                 @endif
-
                 @if(session('auth_user') && session('auth_user')['role_id'] == 2 || session('auth_user')['role_id'] == 1)
                     <li class="nav-item">
                     <a href="#" class="nav-link">
@@ -121,7 +120,6 @@
                     </ul>
                 </li>
                 @endif
-                
 
                 @if(session('auth_user') && session('auth_user')['role_id'] == 3)
                     <li class="nav-item">

@@ -80,7 +80,7 @@ public function index(Request $request)
                 $pending = $allRequests->where('status', 'pending');
                 $history = $allRequests->whereIn('status', ['approved', 'rejected']);
 
-                return view('admin.request_index', compact('pending', 'history'));
+                return view('admin.request_index', compact('pending', 'history', 'users', 'vehicles'));
             }
         } catch (\Exception $e) {
             return back()->with('error', 'Error de conexión.');
@@ -170,20 +170,24 @@ public function index(Request $request)
         ]);
         
         $token = session('access_token');
-
+        $statusOption = 'pending';
+        $userId = session('auth_user')['id'];
+         // Valor por defecto para choferes (role_id 3)
         try {
-            
-        $datosParaEnviar = [
-            'user_id'      => session('auth_user')['id'], 
-            'vehicle_id'   => $request->vehicle_id,
-            'start_date'   => $request->start_date,
-            'end_date'     => $request->end_date,
-            'observations' => $request->observations,
-            'status'       => 'pending',
-        ];
+            if(session('role_id') != 3){
+              $statusOption = 'approved'; 
+            }
+            $datosParaEnviar = [
+                'user_id'      => $userId, 
+                'vehicle_id'   => $request->vehicle_id,
+                'start_date'   => $request->start_date,
+                'end_date'     => $request->end_date,
+                'observations' => $request->observations,
+                'status'       => $statusOption,
+            ];
         $response = Http::withToken($token)->post(config('services.academy_api.url') . "/api/request", $datosParaEnviar);
             if ($response->successful()) {
-                return redirect()->route('requests.index')->with('success', 'Solicitud creada con éxito.');
+                return redirect()->route('admin_index')->with('success', 'Solicitud creada con éxito.');
             }
             return back()->withErrors(['api' => 'Error al crear la solicitud.']);
         } catch (\Exception $e) {
