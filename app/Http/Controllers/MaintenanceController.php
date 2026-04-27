@@ -18,7 +18,6 @@ class MaintenanceController extends Controller
             return redirect()->route('login')->with('error', 'Sesión expirada.');
         }
 
-        // Solo Admin (1) y Operador (2) pueden acceder
         $user = session('auth_user');
         $role = $user['role_id'] ?? null;
         if (!in_array($role, [1, 2])) {
@@ -28,12 +27,13 @@ class MaintenanceController extends Controller
         $filter = $request->get('filter', '');
 
         try {
-            // El backend utiliza apiResource para 'maintenance' → ruta base /api/maintenance
-            $endpoint = '/api/maintenance';
-            $query = ['page' => $request->get('page', 1)];
+            // Selecciona el endpoint según el filtro
             if ($filter === 'inactive') {
-                $query['inactive'] = 'true';
+                $endpoint = '/api/maintenance/inactive';   // <-- nuevo endpoint
+            } else {
+                $endpoint = '/api/maintenance';
             }
+            $query = ['page' => $request->get('page', 1)];
 
             $response = Http::withToken($token)
                 ->timeout(10)
@@ -62,15 +62,10 @@ class MaintenanceController extends Controller
         }
     }
 
-    /**
-     * Formulario de creación.
-     */
     public function create()
     {
         $token = session('access_token');
-        if (!$token) {
-            return redirect()->route('login')->with('error', 'Sesión expirada.');
-        }
+        if (!$token) return redirect()->route('login')->with('error', 'Sesión expirada.');
 
         $user = session('auth_user');
         $role = $user['role_id'] ?? null;
@@ -78,7 +73,6 @@ class MaintenanceController extends Controller
             return redirect()->route('dashboard')->with('error', 'No autorizado.');
         }
 
-        // Obtener vehículos disponibles desde la API
         try {
             $response = Http::withToken($token)
                 ->timeout(10)
@@ -91,15 +85,10 @@ class MaintenanceController extends Controller
         return view('layouts.maintenances.register', compact('vehicles'));
     }
 
-    /**
-     * Guardar nuevo mantenimiento.
-     */
     public function store(StoreMaintenanceRequest $request)
     {
         $token = session('access_token');
-        if (!$token) {
-            return redirect()->route('login');
-        }
+        if (!$token) return redirect()->route('login');
 
         try {
             $response = Http::withToken($token)
@@ -119,15 +108,10 @@ class MaintenanceController extends Controller
         }
     }
 
-    /**
-     * Formulario de edición.
-     */
     public function edit($id)
     {
         $token = session('access_token');
-        if (!$token) {
-            return redirect()->route('login');
-        }
+        if (!$token) return redirect()->route('login');
 
         try {
             $response = Http::withToken($token)
@@ -135,7 +119,6 @@ class MaintenanceController extends Controller
 
             if ($response->successful()) {
                 $maintenance = $response->json()['data'] ?? $response->json();
-                // Obtener vehículos para el select
                 $vehResponse = Http::withToken($token)
                     ->get(config('services.academy_api.url') . '/api/vehicle?per_page=100');
                 $vehicles = $vehResponse->successful() ? ($vehResponse->json()['data']['data'] ?? []) : [];
@@ -150,15 +133,10 @@ class MaintenanceController extends Controller
         }
     }
 
-    /**
-     * Actualizar mantenimiento.
-     */
     public function update(StoreMaintenanceRequest $request, $id)
     {
         $token = session('access_token');
-        if (!$token) {
-            return redirect()->route('login');
-        }
+        if (!$token) return redirect()->route('login');
 
         try {
             $response = Http::withToken($token)
@@ -178,15 +156,10 @@ class MaintenanceController extends Controller
         }
     }
 
-    /**
-     * Soft delete (cancelar/inactivar).
-     */
     public function destroy($id)
     {
         $token = session('access_token');
-        if (!$token) {
-            return redirect()->route('login');
-        }
+        if (!$token) return redirect()->route('login');
 
         try {
             $response = Http::withToken($token)
@@ -203,15 +176,10 @@ class MaintenanceController extends Controller
         }
     }
 
-    /**
-     * Reactivar mantenimiento.
-     */
     public function restore($id)
     {
         $token = session('access_token');
-        if (!$token) {
-            return redirect()->route('login');
-        }
+        if (!$token) return redirect()->route('login');
 
         try {
             $response = Http::withToken($token)
@@ -229,15 +197,10 @@ class MaintenanceController extends Controller
         }
     }
 
-    /**
-     * Completar mantenimiento (liberar vehículo).
-     */
     public function complete($id)
     {
         $token = session('access_token');
-        if (!$token) {
-            return redirect()->route('login');
-        }
+        if (!$token) return redirect()->route('login');
 
         try {
             $response = Http::withToken($token)
