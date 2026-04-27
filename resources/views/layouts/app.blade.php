@@ -35,6 +35,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
     <script src="{{ asset('js/adminlte.js') }}"></script>
 
-    @stack('js') {{-- Para meter scripts extra --}}
+    @stack('scripts') {{-- Para meter scripts extra --}}
 </body>
 </html>

@@ -97,8 +97,21 @@ Route::prefix('vehicle')->name('vehicle.')->group(function () {
     Route::delete('/{id}', [VehicleController::class, 'destroy'])->name('destroy');
 });
 
+Route::put('/admin/requests/{id}/update', [RequestController::class, 'updateStatus'])->name('admin.requests.update');
 Route::get('/catalog', [RequestController::class, 'catalog'])->name('requests.catalog');
-
+Route::prefix('requests')->name('requests.')->group(function () {
+    Route::get('/my_requests', [RequestController::class, 'myRequests'])->name('my_requests');
+    Route::get('/admin', [RequestController::class, 'adminIndex'])->name('admin_index');
+    Route::put('/{id}/cancel', [RequestController::class, 'cancel'])->name('cancel');
+    Route::get('/', [RequestController::class, 'index'])->name('index');
+    Route::get('/create', [RequestController::class, 'create'])->name('create');
+    Route::get('/{id}/edit', [RequestController::class, 'edit'])->name('edit');
+    Route::get('/{id}', [RequestController::class, 'show'])->name('show');
+    Route::post('/', [RequestController::class, 'store'])->name('store');
+    Route::patch('/{id}/restore', [RequestController::class, 'restore'])->name('restore');
+    Route::put('/{id}', [RequestController::class, 'update'])->name('update');
+    Route::delete('/{id}', [RequestController::class, 'destroy'])->name('destroy');
+});
 
 // Rutas para gestionar los trayectos
 Route::prefix('routes')->name('routes.')->group(function () {

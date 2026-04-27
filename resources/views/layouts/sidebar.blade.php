@@ -102,6 +102,67 @@
                 </li>
                 @endif
 
+                @if(session('auth_user') && session('auth_user')['role_id'] == 2 || session('auth_user')['role_id'] == 1)
+                    <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon bi bi-people-fill"></i>
+                        <p>
+                            Solicitudes
+                            <i class="nav-arrow bi bi-chevron-right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('requests.admin_index') }}" class="nav-link">
+                                <i class="nav-icon bi bi-circle"></i>
+                                <p>Todos</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                @endif
+                
+
+                @if(session('auth_user') && session('auth_user')['role_id'] == 3)
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon bi bi-people-fill"></i>
+                            <p>
+                                Vehiculos
+                                <i class="nav-arrow bi bi-chevron-right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{ route('requests.index') }}" class="nav-link">
+                                    <i class="nav-icon bi bi-circle"></i>
+                                    <p>Ver vehiculos habilitados</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon bi bi-people-fill"></i>
+                            <p>
+                                Historial de solicitudes
+                                <i class="nav-arrow bi bi-chevron-right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{ route('requests.my_requests') }}" class="nav-link">
+                                    <i class="nav-icon bi bi-circle"></i>
+                                    <p>Ver historial de solicitudes</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                @endif
+                
+                
+
 
 
 
