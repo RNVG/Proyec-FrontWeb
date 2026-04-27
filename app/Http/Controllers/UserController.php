@@ -5,62 +5,56 @@ namespace App\Http\Controllers;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use App\Http\Requests\StoreUserRequest;
+use Illuminate\Http\Request;               // ← NUEVO (para type‑hint Request)
+use Illuminate\Support\Facades\Http;
 
 class UserController extends Controller
 {
 
-    public function index()
-    {
-        $token = session('access_token');
-        if (! $token) {
-            return redirect()->route('login')->with('error', 'Sesión expirada.');
-        }
-
-        $authUser = session('auth_user');
-        if (!$authUser || ($authUser['role_id'] ?? null) != 1) {
-            return redirect()->route('dashboard')->with('error', 'No autorizado.');
-        }
-
-        $filter = request()->query('filter'); // 'inactive' o null
-
-        try {
-            $client = new Client([
-                'base_uri' => config('services.academy_api.url'),
-                'timeout'  => 10,
-            ]);
-
-            // El backend solo tiene /api/users (no hay /api/users/inactivo separado)
-            $response = $client->get('/api/users', [
-                'headers' => [
-                    'Accept'        => 'application/json',
-                    'Authorization' => 'Bearer ' . $token,
-                ],
-            ]);
-
-            $body = json_decode($response->getBody(), true);
-            // Estructura paginada: data.data
-            $usersData = $body['data'] ?? [];
-            $allUsers = $usersData['data'] ?? $usersData;
-
-            // Filtrar manualmente según el parámetro ?filter=inactive
-            // ya que el backend nos devuelve todos los registros juntos.
-            if ($filter === 'inactive') {
-                // Solo usuarios con deleted_at no vacío
-                $users = array_filter($allUsers, function ($user) {
-                    return !empty($user['deleted_at']);
-                });
-            } else {
-                // Por defecto, solo usuarios activos (deleted_at == null)
-                $users = array_filter($allUsers, function ($user) {
-                    return empty($user['deleted_at']);
-                });
-            }
-
-            return view('layouts.users.index', compact('users', 'filter'));
-        } catch (RequestException $e) {
-            return redirect()->route('dashboard.admin')->with('error', 'Error al cargar usuarios.');
-        }
+  
+    public function index(Request $request)
+    {   
+    $token = session('access_token');
+    if (! $token) {
+        return redirect()->route('login')->with('error', 'Sesión expirada.');
     }
+
+    // Solo administrador puede acceder
+    $authUser = session('auth_user');
+    if (!$authUser || ($authUser['role_id'] ?? null) != 1) {
+        return redirect()->route('dashboard')->with('error', 'No autorizado.');
+    }
+
+    $filter = $request->query('filter'); // 'inactive' o null
+
+    try {
+        
+        if ($filter === 'inactive') {
+            $endpoint = '/api/users/inactive';  // ← Método inactive() del backend
+        } else {
+            $endpoint = '/api/users';           // ← Método index() normal
+        }
+
+        $response = Http::withToken($token)
+            ->timeout(10)
+            ->get(config('services.academy_api.url') . $endpoint, [
+                'page' => $request->get('page', 1)
+            ]);
+
+        if ($response->successful()) {
+            $data = $response->json();
+            // El backend devuelve estructura paginada: { data: { data: [...], current_page, ... } }
+            $users = $data['data']['data'] ?? $data['data'] ?? [];
+            return view('layouts.users.index', compact('users', 'filter'));
+        }
+
+        return back()->with('error', 'Error de la API: ' . ($response->json()['message'] ?? 'Desconocido'));
+
+    } catch (\Exception $e) {
+        return redirect()->route('dashboard.admin')->with('error', 'Error al cargar usuarios.');
+    }
+}
+
 
 
     public function create()

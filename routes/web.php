@@ -7,6 +7,8 @@ use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\RequestController;
 use App\Http\Controllers\RouteController;
 use App\Http\Controllers\TripController;
+use App\Http\Controllers\ReportController;
+use App\Http\Controllers\MaintenanceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -110,16 +112,15 @@ Route::prefix('requests')->name('requests.')->group(function () {
     Route::delete('/{id}', [RequestController::class, 'destroy'])->name('destroy');
 });
 
-// Rutas para gestionar los trayectos
+// Rutas para gestionar las rutas
 Route::prefix('routes')->name('routes.')->group(function () {
     Route::get('/', [RouteController::class, 'index'])->name('index');
     Route::get('/create', [RouteController::class, 'create'])->name('create');
-    Route::get('/{id}/edit', [RouteController::class, 'edit'])->name('edit');
-    Route::get('/{id}', [RouteController::class, 'show'])->name('show');
     Route::post('/', [RouteController::class, 'store'])->name('store');
-    Route::patch('/{id}/restore', [RouteController::class, 'restore'])->name('restore');
-    Route::put('/{id}', [RouteController::class, 'update'])->name('update');
-    Route::delete('/{id}', [RouteController::class, 'destroy'])->name('destroy');
+    Route::get('/{route}/edit', [RouteController::class, 'edit'])->name('edit');
+    Route::put('/{route}', [RouteController::class, 'update'])->name('update');
+    Route::delete('/{route}', [RouteController::class, 'destroy'])->name('destroy');
+    Route::patch('/{route}/restore', [RouteController::class, 'restore'])->name('restore');
 });
 // Rutas para gestionar los viajes realizados
 Route::prefix('trips')->name('trips.')->group(function () {
@@ -131,6 +132,34 @@ Route::prefix('trips')->name('trips.')->group(function () {
     Route::patch('/{id}/restore', [TripController::class, 'restore'])->name('restore');
     Route::put('/{id}', [TripController::class, 'update'])->name('update');
     Route::delete('/{id}', [TripController::class, 'destroy'])->name('destroy');
+});
+
+/*
+|--------------------------------------------------------------------------
+| Módulo de Reportes (solo Administrador)
+|--------------------------------------------------------------------------
+*/
+Route::prefix('reports')->name('reports.')->group(function () {
+    Route::get('/', [ReportController::class, 'index'])->name('index'); // ← NUEVO
+    Route::get('/available-vehicles', [ReportController::class, 'availableVehicles'])->name('available');
+    Route::get('/fleet-usage', [ReportController::class, 'fleetUsage'])->name('fleetUsage');
+    Route::get('/driver-history', [ReportController::class, 'driverHistory'])->name('driverHistory');
+});
+
+/*
+|--------------------------------------------------------------------------
+| Módulo de Mantenimientos (Admin y Operador)
+|--------------------------------------------------------------------------
+*/
+Route::prefix('maintenances')->name('maintenances.')->group(function () {
+    Route::get('/', [MaintenanceController::class, 'index'])->name('index');
+    Route::get('/create', [MaintenanceController::class, 'create'])->name('create');
+    Route::post('/', [MaintenanceController::class, 'store'])->name('store');
+    Route::get('/{maintenance}/edit', [MaintenanceController::class, 'edit'])->name('edit');
+    Route::put('/{maintenance}', [MaintenanceController::class, 'update'])->name('update');
+    Route::delete('/{maintenance}', [MaintenanceController::class, 'destroy'])->name('destroy');
+    Route::patch('/{maintenance}/restore', [MaintenanceController::class, 'restore'])->name('restore');
+    Route::patch('/{maintenance}/complete', [MaintenanceController::class, 'complete'])->name('complete');
 });
 
 /*

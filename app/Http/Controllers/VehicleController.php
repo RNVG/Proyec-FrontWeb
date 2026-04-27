@@ -153,7 +153,7 @@ class VehicleController extends Controller
             if ($response->successful()) {
                 $vehicle = $response->json()['data'];
                 return view('vehicles.edit', compact('vehicle'));
-s            }
+            }
             return redirect()->route('vehicle.index')->with('error', 'Vehículo no encontrado.');
         } catch (\Exception $e) {
             return redirect()->route('vehicle.index')->with('error', 'Error de conexión.');
@@ -224,4 +224,5 @@ s            }
             return back()->with('error', 'No se pudo reactivar el vehículo.');
         }
     }
+
 }
