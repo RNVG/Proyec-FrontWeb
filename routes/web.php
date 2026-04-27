@@ -113,16 +113,15 @@ Route::prefix('requests')->name('requests.')->group(function () {
     Route::delete('/{id}', [RequestController::class, 'destroy'])->name('destroy');
 });
 
-// Rutas para gestionar los trayectos
+// Rutas para gestionar las rutas
 Route::prefix('routes')->name('routes.')->group(function () {
     Route::get('/', [RouteController::class, 'index'])->name('index');
     Route::get('/create', [RouteController::class, 'create'])->name('create');
-    Route::get('/{id}/edit', [RouteController::class, 'edit'])->name('edit');
-    Route::get('/{id}', [RouteController::class, 'show'])->name('show');
     Route::post('/', [RouteController::class, 'store'])->name('store');
-    Route::patch('/{id}/restore', [RouteController::class, 'restore'])->name('restore');
-    Route::put('/{id}', [RouteController::class, 'update'])->name('update');
-    Route::delete('/{id}', [RouteController::class, 'destroy'])->name('destroy');
+    Route::get('/{route}/edit', [RouteController::class, 'edit'])->name('edit');
+    Route::put('/{route}', [RouteController::class, 'update'])->name('update');
+    Route::delete('/{route}', [RouteController::class, 'destroy'])->name('destroy');
+    Route::patch('/{route}/restore', [RouteController::class, 'restore'])->name('restore');
 });
 
 // Rutas para gestionar los viajes realizados
