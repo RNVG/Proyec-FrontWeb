@@ -23,7 +23,7 @@
             <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="navigation"
                 aria-label="Main navigation" data-accordion="false" id="navigation">
 
-                <!-- Módulo Usuarios -->
+                <!-- Módulo Usuarios (Admin) -->
                 @if(session('auth_user') && session('auth_user')['role_id'] == 1)
                 <li class="nav-item">
                     <a href="#" class="nav-link">
@@ -50,97 +50,8 @@
                 </li>
                 @endif
 
-                @if(session('auth_user') && session('auth_user')['role_id'] == 1)
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon bi bi-people-fill"></i>
-                        <p>
-                            Rutas
-                            <i class="nav-arrow bi bi-chevron-right"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="{{ route('routes.create') }}" class="nav-link">
-                                <i class="nav-icon bi bi-circle"></i>
-                                <p>Registrar nueva ruta</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('routes.index') }}" class="nav-link">
-                                <i class="nav-icon bi bi-circle"></i>
-                                <p>Ver todas la rutas</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('routes.index') }}" class="nav-link">
-                                <i class="nav-icon bi bi-circle"></i>
-                                <p>Todos</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                @endif
-
-                @if(session('auth_user') && session('auth_user')['role_id'] == 1)
-                    <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon bi bi-people-fill"></i>
-                        <p>
-                            Vehiculos
-                            <i class="nav-arrow bi bi-chevron-right"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="{{ route('vehicle.index') }}" class="nav-link">
-                                <i class="nav-icon bi bi-circle"></i>
-                                <p>Todos</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                @endif
-
-
-
-
-
-
-                <!-- Módulo Vehículos (comentado) -->
-                {{--
-                @if(session('auth_user') && in_array(session('auth_user')['role_id'], [1, 2]))
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon bi bi-truck"></i>
-                        <p>
-                            Vehículos
-                            <i class="nav-arrow bi bi-chevron-right"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="{{ route('vehicles.index') }}" class="nav-link">
-                                <i class="nav-icon bi bi-circle"></i>
-                                <p>Todos</p>
-                            </a>
-                        </li>
-                        @if(session('auth_user')['role_id'] == 1)
-                        <li class="nav-item">
-                            <a href="{{ route('vehicles.create') }}" class="nav-link">
-                                <i class="nav-icon bi bi-circle"></i>
-                                <p>Registrar</p>
-                            </a>
-                        </li>
-                        @endif
-                    </ul>
-                </li>
-                @endif
-                --}}
-
-                <!-- Módulo Rutas (comentado) -->
-                {{--
-                @if(session('auth_user') && in_array(session('auth_user')['role_id'], [1, 2]))
+                <!-- Módulo Rutas (Solo Operador) -->
+                @if(session('auth_user') && session('auth_user')['role_id'] == 2)
                 <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="nav-icon bi bi-map"></i>
@@ -156,19 +67,33 @@
                                 <p>Todas</p>
                             </a>
                         </li>
+                    </ul>
+                </li>
+                @endif
+
+                <!-- Módulo Vehículos (Admin) -->
+                @if(session('auth_user') && session('auth_user')['role_id'] == 1)
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon bi bi-truck"></i>
+                        <p>
+                            Vehículos
+                            <i class="nav-arrow bi bi-chevron-right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{ route('routes.create') }}" class="nav-link">
+                            <a href="{{ route('vehicle.index') }}" class="nav-link">
                                 <i class="nav-icon bi bi-circle"></i>
-                                <p>Registrar</p>
+                                <p>Todos</p>
                             </a>
                         </li>
                     </ul>
                 </li>
                 @endif
-                --}}
 
-                <!-- Módulo Solicitudes (comentado) -->
-                {{--
+                <!-- Módulo Solicitudes (Chofer/Operador) - Pendiente de activar -->
+                <?php /*
                 @if(session('auth_user'))
                     @php $role = session('auth_user')['role_id']; @endphp
                     @if($role == 3)
@@ -221,7 +146,7 @@
                     </li>
                     @endif
                 @endif
-                --}}
+                */ ?>
 
             </ul>
             <!--end::Sidebar Menu-->
