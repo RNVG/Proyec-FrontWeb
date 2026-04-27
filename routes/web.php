@@ -4,6 +4,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VehicleController;
+use App\Http\Controllers\RequestController;
+use App\Http\Controllers\RouteController;
+use App\Http\Controllers\TripController;
 
 /*
 |--------------------------------------------------------------------------
@@ -89,12 +92,38 @@ Route::prefix('vehicle')->name('vehicle.')->group(function () {
     Route::get('/{id}/edit', [VehicleController::class, 'edit'])->name('edit');
     Route::get('/{id}', [VehicleController::class, 'show'])->name('show');
     Route::post('/', [VehicleController::class, 'store'])->name('store');
-
+    Route::patch('/{id}/restore', [VehicleController::class, 'restore'])->name('restore');
     Route::put('/{id}', [VehicleController::class, 'update'])->name('update');
     Route::delete('/{id}', [VehicleController::class, 'destroy'])->name('destroy');
-    Route::patch('/{id}/restore', [VehicleController::class, 'restore'])->name('restore');
 });
 
+Route::get('/catalog', [RequestController::class, 'catalog'])->name('requests.catalog');
+
+
+// Rutas para gestionar los trayectos
+Route::prefix('routes')->name('routes.')->group(function () {
+    Route::get('/', [RouteController::class, 'index'])->name('index');
+    Route::get('/create', [RouteController::class, 'create'])->name('create');
+    Route::get('/{id}/edit', [RouteController::class, 'edit'])->name('edit');
+    Route::get('/{id}', [RouteController::class, 'show'])->name('show');
+    Route::post('/', [RouteController::class, 'store'])->name('store');
+    Route::patch('/{id}/restore', [RouteController::class, 'restore'])->name('restore');
+    Route::put('/{id}', [RouteController::class, 'update'])->name('update');
+    Route::delete('/{id}', [RouteController::class, 'destroy'])->name('destroy');
+});
+
+// Rutas para gestionar los viajes realizados
+
+Route::prefix('trips')->name('trips.')->group(function () {
+    Route::get('/', [TripController::class, 'index'])->name('index');
+    Route::get('/create', [TripController::class, 'create'])->name('create');
+    Route::get('/{id}/edit', [TripController::class, 'edit'])->name('edit');
+    Route::get('/{id}', [TripController::class, 'show'])->name('show');
+    Route::post('/', [TripController::class, 'store'])->name('store');
+    Route::patch('/{id}/restore', [TripController::class, 'restore'])->name('restore');
+    Route::put('/{id}', [TripController::class, 'update'])->name('update');
+    Route::delete('/{id}', [TripController::class, 'destroy'])->name('destroy');
+});
 
 /*
 Route::get('/users/register', function () {

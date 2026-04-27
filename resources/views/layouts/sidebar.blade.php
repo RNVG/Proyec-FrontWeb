@@ -50,9 +50,40 @@
                 </li>
                 @endif
 
-
                 @if(session('auth_user') && session('auth_user')['role_id'] == 1)
                 <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon bi bi-people-fill"></i>
+                        <p>
+                            Rutas
+                            <i class="nav-arrow bi bi-chevron-right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('routes.create') }}" class="nav-link">
+                                <i class="nav-icon bi bi-circle"></i>
+                                <p>Registrar nueva ruta</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('routes.index') }}" class="nav-link">
+                                <i class="nav-icon bi bi-circle"></i>
+                                <p>Ver todas la rutas</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('routes.index') }}" class="nav-link">
+                                <i class="nav-icon bi bi-circle"></i>
+                                <p>Todos</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                @endif
+
+                @if(session('auth_user') && session('auth_user')['role_id'] == 1)
+                    <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="nav-icon bi bi-people-fill"></i>
                         <p>
@@ -60,6 +91,7 @@
                             <i class="nav-arrow bi bi-chevron-right"></i>
                         </p>
                     </a>
+                    <ul class="nav nav-treeview">
                         <li class="nav-item">
                             <a href="{{ route('vehicle.index') }}" class="nav-link">
                                 <i class="nav-icon bi bi-circle"></i>

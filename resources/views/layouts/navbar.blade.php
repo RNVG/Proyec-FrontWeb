@@ -157,7 +157,12 @@
                              <img src="{{ asset('assets/img/userProfile.jpg') }}" class="rounded-circle shadow"
                                  alt="User Image" />
                              <p>
-                                 Dayans Chacón - Admin
+                                
+                                @if(auth()->check())
+                                    <span>{{ auth()->user()->name }}</span>
+                                @else
+                                    Usuario Anónimo
+                                @endif
                                  <small>Member since Nov. 2023</small>
                              </p>
                          </li>

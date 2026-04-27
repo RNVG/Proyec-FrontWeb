@@ -41,26 +41,51 @@ class VehicleController extends Controller
     }
     public function index(Request $request)
     {
-$token = session('access_token');
-    
-    // Capturamos el filtro de la URL, por defecto es 'active'
-        $status = $request->get('status_filter', 'active');
+        $token = session('access_token');
+        $role = session('user_role');
 
-        $response = Http::withToken($token)
-            ->get(config('services.academy_api.url') . "/api/vehicle", [
-                'status_filter' => $status // Enviamos el parámetro a la API
-            ]);
+        // 1. Protección de Filtros por Rol
+        // Si es Chofer (3), forzamos 'available'. Si no, usamos el filtro del request o 'all'
+        $status = ($role == 3) ? 'available' : $request->get('status_filter', 'all');
 
-        if ($response->successful()) {
-            // Como ellos usan paginate(10), los datos están en data -> data
-            $vehicles = $response->json()['data']['data'];
-            return view('vehicles.index', compact('vehicles', 'status'));
+        try {
+            $response = Http::withToken($token)
+                ->timeout(5) // Evita que la página se quede cargando si la API cae
+                ->get(config('services.academy_api.url') . "/api/vehicle", [
+                    'status_filter' => $status,
+                    'page' => $request->get('page', 1) // Enviamos la página actual para que la paginación funcione
+                ]);
+            if ($response->successful()) {
+                $data = $response->json();
+
+                // 2. Extracción correcta de datos según el JSON de tus compañeros
+                // Según el JSON: message, data { current_page, data: [...] }
+                $vehicles = $data['data']['data'] ?? [];
+                
+                // 3. Paginación manual (opcional)
+                // Si quieres usar los links de abajo (anterior/siguiente), pasamos la info de paginación
+                $pagination = [
+                    'current_page' => $data['data']['current_page'] ?? 1,
+                    'last_page' => $data['data']['last_page'] ?? 1,
+                    'next_page_url' => $data['data']['next_page_url'] ?? null,
+                    'prev_page_url' => $data['data']['prev_page_url'] ?? null,
+                ];
+
+                return view('vehicles.index', compact('vehicles', 'status', 'role', 'pagination'));
+            }
+
+            return back()->with('error', 'Error de la API: ' . ($response->json()['message'] ?? 'Desconocido'));
+
+        } catch (\Exception $e) {
+            // En caso de que el servidor de la API esté apagado (muy común en desarrollo local)
+            return view('vehicles.index', [
+                'vehicles' => [],
+                'status' => $status,
+                'role' => $role,
+                'pagination' => null
+            ])->with('error', 'No se pudo establecer conexión con el servidor de datos.');
         }
-
-        return back()->with('error', 'No se pudieron cargar los datos.');
-
     }
-
     public function show(){
         
     }
@@ -87,6 +112,7 @@ $token = session('access_token');
     ]);
 
     $imageUrl = null;
+
 
     // 2. Lógica de la Imagen: Guardar localmente en el Front
     if ($request->hasFile('image')) {
@@ -132,7 +158,7 @@ $token = session('access_token');
     }
     }
 
-        public function edit($id)
+    public function edit($id)
     {
         // Obtener el vehículo desde el backend
         $token = session('access_token');
@@ -188,6 +214,7 @@ $token = session('access_token');
         if ($response->successful()) {
             return redirect()->route('vehicle.index')->with('success', 'Vehículo actualizado correctamente.');
         }
+
         return back()->withErrors('Error al actualizar en la API.')->withInput();
 
     } catch (\Exception $e) {
@@ -213,20 +240,17 @@ $token = session('access_token');
     }
     public function restore($id)
     {
-        $token = session('access_token');
-        try {
-            // Importante usar PATCH y la ruta correcta que definieron en el Back
-            $response = Http::withToken($token)
-                ->patch(config('services.academy_api.url') . "/api/vehicle/{$id}/restore");
-
-            if ($response->successful()) {
-                return redirect()->route('vehicle.index')->with('success', 'Vehículo activado nuevamente.');
-            }
-
-            return back()->with('error', 'No se pudo restaurar el vehículo.');
-        } catch (\Exception $e) {
-            return back()->with('error', 'Error de comunicación.');
+        if($redirect = $this->checkSession()) return $redirect;
+        try{
+            $this->getClient()->patch("/api/vehicle/{$id}/restore", [
+                'headers' => $this->getHeaders(),
+            ]);
+            return redirect()->route('vehicle.index')->with('success', 'Vehículo reactivado correctamente.');
+        } catch (RequestException $e) {
+            Log::error("Error al reactivar vehículo ID {$id}: " . $e->getMessage());
+            return back()->with('error', 'No se pudo reactivar el vehículo.');
         }
+
     }
 
 

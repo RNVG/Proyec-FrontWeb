@@ -19,6 +19,15 @@
                 <div class="card-header">
                     <h3 class="card-title">Modificar datos de la unidad</h3>
                 </div>
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
                 <form action="{{ route('vehicle.update', $vehicle['id']) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT') {{-- Indispensable para rutas de actualización --}}
@@ -55,11 +64,22 @@
                                 </select>
                             </div>
                             <div class="col-md-3 mb-3">
-                                <label class="form-label">Estado</label>
-                                <select name="status" class="form-select">
-                                    <option value="available" {{ $vehicle['status'] == 'available' ? 'selected' : '' }}>Disponible</option>
-                                    <option value="maintenance" {{ $vehicle['status'] == 'maintenance' ? 'selected' : '' }}>Mantenimiento</option>
-                                </select>
+                                <label class="form-label">Estado Operativo</label>
+                                    <select name="status" class="form-select @error('status') is-invalid @enderror">
+                                       
+                                        <option value="available" {{ $vehicle['status'] == 'available' ? 'selected' : '' }}>
+                                            Habilitado 
+                                        </option>
+                                        <option value="unavailable" {{ $vehicle['status'] == 'unavailable' ? 'selected' : '' }}>
+                                            No habilitado
+                                        </option>
+                                        <option value="under_maintenance" {{ $vehicle['status'] == 'under_maintenance' ? 'selected' : '' }}>
+                                            En Mantenimiento 
+                                        </option>
+                                    </select>
+                                @error('status')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
 
                             <div class="col-md-12 mb-3">
